@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohnad Al_kadri | مهندس من سوريا</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #007BFF;
+            --secondary: #0f0f0f;
+            --accent: #00BFFF;
+            --glass: rgba(255, 255, 255, 0.05);
+            --vs-me: #007BFF;
+            --vs-world: #FF4D4D;
+            --syria: #4CAF50;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--secondary);
+            color: #fff;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* فيديو الخلفية */
+        #bg-video {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.3) contrast(1.2);
+            z-index: -3;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.6), #000);
+            z-index: -2;
+        }
+        /* طبقة النجوم */
+        canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+        /* المحتوى الرئيسي */
+        #content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 20px 60px;
+        }
+        /* صورة البروفايل */
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            padding: 8px;
+            background: var(--primary);
+            box-shadow: 0 0 40px var(--primary), 0 0 80px var(--accent);
+            transition: 0.5s;
+        }
+        .profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 80px var(--primary), 0 0 150px var(--accent);
+        }
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #111;
+        }
+        /* العنوان */
+        h1 {
+            margin: 20px 0 5px;
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        h1 span {
+            color: var(--primary);
+            text-shadow: 0 0 25px var(--primary), 0 0 50px var(--accent);
+        }
+        /* العمر - بالانجليزية */
+        .age {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #FFE873;
+            text-shadow: 0 0 15px gold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .age i {
+            color: #FFD700;
+            font-size: 2rem;
+        }
+        /* Me vs World */
+        .vs-world {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 15px 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .vs-me {
+            background: linear-gradient(45deg, var(--vs-me), #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3.2rem;
+            text-shadow: 0 0 30px var(--vs-me);
+        }
+        .vs-symbol {
+            background: linear-gradient(145deg, #ffaa00, #ff5500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3.5rem;
+            text-shadow: 0 0 30px #ffaa00;
+        }
+        .vs-world-text {
+            background: linear-gradient(45deg, var(--vs-world), #ff8080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3.2rem;
+            text-shadow: 0 0 30px var(--vs-world);
+        }
+        /* قسم سوريا - دمشق */
+        .syria-section {
+            margin: 20px auto 15px;
+            padding: 15px 30px;
+            background: rgba(0, 123, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid #4CAF50;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 0 40px rgba(76, 175, 80, 0.4), 0 0 80px rgba(0, 123, 255, 0.3);
+            transition: 0.3s;
+        }
+        .syria-section:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px #4CAF50, 0 0 100px var(--primary);
+            border-color: var(--primary);
+        }
+        .syria-section i {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            text-shadow: 0 0 20px #4CAF50;
+        }
+        .syria-section span {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #4CAF50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .syria-section small {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+        /* التخصص */
+        .profession {
+            font-size: 1.3rem;
+            color: #ccc;
+            margin: 15px 0 25px;
+            line-height: 1.8;
+        }
+        /* زر الموسيقى */
+        .music-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-size: 26px;
+            cursor: pointer;
+            margin: 25px auto;
+            box-shadow: 0 0 40px var(--primary);
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .music-btn:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 70px var(--accent);
+            transform: rotate(5deg);
+        }
+        /* أزرار التواصل */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .btn {
+            padding: 16px 20px;
+            border-radius: 30px;
+            background: var(--glass);
+            color: #fff;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 0 30px rgba(0,123,255,0.4);
+            transition: 0.4s;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn i {
+            font-size: 1.3rem;
+            color: var(--primary);
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: var(--primary);
+            color: #000;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 50px var(--accent);
+        }
+        .btn:hover i {
+            color: #000;
+        }
+        /* المهارات */
+        .skills {
+            margin: 50px 0;
+            padding: 35px;
+            border-radius: 40px;
+            background: var(--glass);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .skills h2 {
+            margin-bottom: 30px;
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 2.2rem;
+            text-shadow: 0 0 20px var(--primary);
+        }
+        .skill-container {
+            margin: 25px 0;
+            text-align: left;
+        }
+        .skill-container .name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            color: #fff;
+            font-size: 1.3rem;
+        }
+        .skill-container .name i {
+            font-size: 1.6rem;
+            width: 30px;
+        }
+        .skill-bar {
+            height: 22px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            width: 100%;
+        }
+        .skill-bar span {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 30px;
+            box-shadow: 0 0 20px var(--primary);
+            transition: width 1.5s ease;
+        }
+        /* القولة البسيطة */
+        .simple-quote {
+            margin: 40px 0 30px;
+            padding: 20px 25px;
+            background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.1), transparent);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 1.8rem;
+            font-weight: 800;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        .quote-civil {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quote-it {
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quote-sep {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        /* الهوايات */
+        .hobbies {
+            margin: 50px 0;
+            padding: 35px;
+            border-radius: 40px;
+            background: rgba(0, 123, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border: 2px solid var(--primary);
+        }
+        .hobbies h2 {
+            margin-bottom: 30px;
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 2.2rem;
+        }
+        .hobby-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .hobby-item {
+            background: rgba(0,0,0,0.5);
+            padding: 18px 30px;
+            border-radius: 60px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 40px rgba(0,123,255,0.4);
+            font-size: 1.6rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .hobby-item:hover {
+            transform: scale(1.05);
+            background: var(--primary);
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 60px var(--accent);
+        }
+        .hobby-item i {
+            color: var(--primary);
+            font-size: 2.2rem;
+            transition: 0.3s;
+        }
+        .hobby-item:hover i {
+            color: #000;
+        }
+        /* رسالة نهاية قرآنية */
+        .farewell {
+            margin: 60px 0 30px;
+            padding: 30px 20px;
+            background: linear-gradient(145deg, rgba(0,123,255,0.1), rgba(0, 0, 0, 0.7));
+            border-radius: 70px;
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            box-shadow: 0 0 50px rgba(0, 123, 255, 0.3);
+            backdrop-filter: blur(5px);
+            transition: 0.4s;
+        }
+        .farewell:hover {
+            border-color: gold;
+            box-shadow: 0 0 70px rgba(255, 215, 0, 0.5), 0 0 100px var(--primary);
+        }
+        .farewell p {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #FFE873;
+            text-shadow: 0 0 15px gold, 0 0 30px var(--primary);
+            line-height: 1.8;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .farewell i {
+            color: gold;
+            font-size: 2.8rem;
+            filter: drop-shadow(0 0 15px gold);
+            transition: 0.3s;
+        }
+        .farewell:hover i {
+            transform: scale(1.1);
+            color: #FFD700;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .age { font-size: 1.4rem; }
+            .vs-world { font-size: 2.2rem; }
+            .vs-me, .vs-world-text { font-size: 2.5rem; }
+            .vs-symbol { font-size: 2.8rem; }
+            .syria-section span { font-size: 1.5rem; }
+            .syria-section i { font-size: 2rem; }
+            .simple-quote { font-size: 1.3rem; gap: 10px; padding: 15px; }
+            .quote-sep { font-size: 1.8rem; }
+            .hobby-item { font-size: 1.3rem; padding: 12px 20px; }
+            .farewell p { font-size: 1.8rem; gap: 15px; }
+            .farewell i { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- فيديو الخلفية -->
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="https://files.catbox.moe/vtom19.mp4" type="video/mp4">
+    </video>
+
+    <!-- طبقة النجوم -->
+    <canvas id="particles"></canvas>
+
+    <!-- ملف الموسيقى -->
+    <audio id="music" src="https://files.catbox.moe/9fyuwb.m4a" preload="auto"></audio>
+
+    <div id="content">
+
+        <!-- صورة البروفايل -->
+        <div class="profile-pic">
+            <img src="main.jpg" alt="Mohnad Al_kadri">
+        </div>
+
+        <!-- الاسم -->
+        <h1>M0HNAD <span>Engineer</span></h1>
+        
+        <!-- العمر باللغة الانجليزية -->
+        <div class="age">
+            <i class="fas fa-birthday-cake"></i>
+            <span>My age: 19 years old</span>
+            <i class="fas fa-star"></i>
+        </div>
+
+        <!-- Me vs World -->
+        <div class="vs-world">
+            <span class="vs-me">ME</span>
+            <span class="vs-symbol">⚡</span>
+            <span class="vs-world-text">WORLD</span>
+        </div>
+
+        <!-- سوريا - د
+        <div class="syria-section">
+            <i class="fas fa-map-pin"></i>
+            <span>سوريا - دمشق</span>
+            <small>🇸🇾</small>
+        </div>
+
+        <!-- التخصص -->
+        <div class="profession">
+            <i class="fas fa-hard-hat" style="color: #FFD700;"></i>  IT Engineer
+            <i class="fas fa-laptop-code" style="color: var(--primary); margin-right: 10px;"></i> Civil Engineer
+        </div>
+
+        <!-- زر تشغيل الموسيقى -->
+        <button class="music-btn" id="musicBtn">
+            <i class="fas fa-play"></i>
+        </button>
+
+        <!-- أزرار التواصل الاجتماعي -->
+        <div class="buttons">
+            <a class="btn" href="https://wa.me/qr/QX5NOKI27Y7PG1" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a class="btn" href="https://t.me/IV_l_I" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+            <!-- زر اتصال مع رابط الرقم (Connect Me) -->
+            <a class="btn" href="tel:0981733603"><i class="fas fa-phone-alt"></i> Connect Me</a>
+        </div>
+
+        <!-- المهارات -->
+        <div class="skills">
+            <h2><i class="fas fa-code"></i> My Skills</h2>
+
+            <div class="skill-container">
+                <span class="name"><i class="fas fa-eye" style="color: #FF4500;"></i> OSINT</span>
+                <div class="skill-bar"><span style="width: 90% !important;"></span></div>
+            </div>
+
+            <div class="skill-container">
+                <span class="name"><i class="fas fa-network-wired" style="color: #00FF00;"></i> Network</span>
+                <div class="skill-bar"><span style="width: 80% !important;"></span></div>
+            </div>
+
+            <div class="skill-container">
+                <span class="name"><i class="fas fa-edit" style="color: #FFD700;"></i> Edit Pictures</span>
+                <div class="skill-bar"><span style="width: 75% !important;"></span></div>
+            </div>
+        </div>
+
+        <!-- القولة البسيطة: بالهندسة أشيد الصروح | بالبرمجة أشيد العقول -->
+        <div class="simple-quote">
+            <span class="quote-civil">👷‍♂️ بالهندسة أشيد الصروح</span>
+            <span class="quote-sep">|</span>
+            <span class="quote-it">👨‍💻 بالبرمجة أشيد العقول</span>
+        </div>
+
+        <!-- الهوايات -->
+        <div class="hobbies">
+            <h2><i class="fas fa-heart"></i> Hobbies</h2>
+            <div class="hobby-items">
+                <div class="hobby-item">
+                    <i class="fas fa-code"></i>
+                    <span>Programmer</span>
+                </div>
+                <div class="hobby-item">
+                    <i class="fas fa-tv"></i>
+                    <span>Anime Watch</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- رسالة نهاية قرآنية -->
+        <div class="farewell">
+            <p>
+                <i class="fas fa-star-and-crescent"></i> 
+                ﴿ وَتَوَفَّنَا مَعَ الْأَبْرَارِ ﴾ 
+                <i class="fas fa-star-and-crescent"></i>
+            </p>
+        </div>
+
+    </div>  <!-- نهاية #content -->
+
+    <script>
+        (function() {
+            // تشغيل الموسيقى
+            const music = document.getElementById('music');
+            const btn = document.getElementById('musicBtn');
+            const icon = btn.querySelector('i');
+            
+            btn.addEventListener('click', function() {
+                if (music.paused) {
+                    music.play().catch(() => {});
+                    icon.className = 'fas fa-pause';
+                } else {
+                    music.pause();
+                    icon.className = 'fas fa-play';
+                }
+            });
+
+            // نظام النجوم المتحركة
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // إنشاء 180 نجمة
+            for (let i = 0; i < 180; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 2.5,
+                    s: Math.random() * 0.8 + 0.2
+                });
+            }
+
+            function animateStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.y += p.s;
+                    if (p.y > canvas.height) {
+                        p.y = 0;
+                        p.x = Math.random() * canvas.width;
+                    }
+                });
+                requestAnimationFrame(animateStars);
+            }
+            animateStars();
+
+            // لا نحتاج لأي كود للمهارات لأننا استخدمنا style مباشرة
+            console.log('الموقع يعمل بكفاءة');
+            
+        })();
+    </script>
+
+</body>
+</html>
